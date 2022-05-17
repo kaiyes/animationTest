@@ -292,31 +292,25 @@ export default function FirstAnimate() {
         </View>
 
         {baseLoading[0] ? (
-          <View style={styles.imgContainer}>
-            <Image
-              source={require('../../assets/asset2.png')}
-              style={styles.imgStyle}
-            />
-          </View>
+          <Image
+            source={require('../../assets/asset2.png')}
+            style={styles.imgStyle}
+            style={[styles.imgStyle, { top: -15, left: wp('45%') }]}
+          />
         ) : null}
 
         {baseLoading[1] ? (
-          <View style={styles.imgContainer}>
-            <Image
-              source={require('../../assets/asset2.png')}
-              style={styles.imgStyle}
-            />
-          </View>
+          <Image
+            source={require('../../assets/asset2.png')}
+            style={[styles.imgStyle, { top: hp('20%'), right: 0 }]}
+          />
         ) : null}
 
         {baseLoading[2] ? (
-          <View
-            style={[styles.imgContainer, { top: hp('20%'), right: wp('20%') }]}>
-            <Image
-              source={require('../../assets/asset2.png')}
-              style={styles.imgStyle}
-            />
-          </View>
+          <Image
+            source={require('../../assets/asset2.png')}
+            style={[styles.imgStyle, { top: hp('20%'), right: wp('40%') }]}
+          />
         ) : null}
       </View>
 
@@ -326,10 +320,14 @@ export default function FirstAnimate() {
           onPress={() => setBaseLoading([1, 0, 0])}>
           <Text style={styles.btnText}>1B</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnStyle} onPress={() => animate2B()}>
+        <TouchableOpacity
+          style={styles.btnStyle}
+          onPress={() => setBaseLoading([0, 1, 0])}>
           <Text style={styles.btnText}>2B</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btnStyle} onPress={() => animate3B()}>
+        <TouchableOpacity
+          style={styles.btnStyle}
+          onPress={() => setBaseLoading([0, 0, 1])}>
           <Text style={styles.btnText}>3B</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnStyle} onPress={() => animateHR()}>
@@ -364,7 +362,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   imgContainer: {
-    zIndex: 0,
     position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
@@ -372,7 +369,7 @@ const styles = StyleSheet.create({
     width: 55,
   },
   imgStyle: {
-    zIndex: 1,
+    transform: [{ rotate: '130deg' }],
     position: 'absolute',
     height: 50,
     width: 50,
@@ -382,6 +379,7 @@ const styles = StyleSheet.create({
     width: 200,
     borderWidth: 2,
     borderColor: 'salmon',
+    transform: [{ rotate: `225deg` }],
   },
   text: {
     marginBottom: 150,
