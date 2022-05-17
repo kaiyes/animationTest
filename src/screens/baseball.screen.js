@@ -294,22 +294,23 @@ export default function FirstAnimate() {
         {baseLoading[0] ? (
           <Image
             source={require('../../assets/asset2.png')}
-            style={styles.imgStyle}
-            style={[styles.imgStyle, { top: -15, left: wp('45%') }]}
+            style={[styles.imgStyle, { top: hp('20%'), right: wp('40%') }]}
           />
         ) : null}
 
         {baseLoading[1] ? (
-          <Image
-            source={require('../../assets/asset2.png')}
-            style={[styles.imgStyle, { top: hp('20%'), right: 0 }]}
-          />
+          <View style={styles.imageContainer}>
+            <Image
+              source={require('../../assets/asset2.png')}
+              style={[styles.imgStyle, { top: hp('15%'), right: wp('-10%') }]}
+            />
+          </View>
         ) : null}
 
         {baseLoading[2] ? (
           <Image
             source={require('../../assets/asset2.png')}
-            style={[styles.imgStyle, { top: hp('20%'), right: wp('40%') }]}
+            style={[styles.imgStyle, { top: -15, left: wp('45%') }]}
           />
         ) : null}
       </View>
@@ -362,7 +363,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   imgContainer: {
-    position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
     height: 55,
