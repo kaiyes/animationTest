@@ -35,20 +35,12 @@ export default function FirstAnimate() {
   const translateX4 = useSharedValue(0)
   const translateY4 = useSharedValue(0)
 
-  // Spring Effect
-  const rotation = useSharedValue(0)
-  const rotation2 = useSharedValue(0)
-  const rotation3 = useSharedValue(0)
-  const rotation4 = useSharedValue(0)
-
   const animatePlayer1 = useAnimatedStyle(() => {
     return {
       transform: [
         { translateX: translateX.value },
         { translateY: translateY.value },
-        { rotateZ: `${rotation.value}deg` },
       ],
-      // opacity: out.value,
     }
   }, [])
 
@@ -57,7 +49,6 @@ export default function FirstAnimate() {
       transform: [
         { translateX: translateX2.value },
         { translateY: translateY2.value },
-        { rotateZ: `${rotation2.value}deg` },
       ],
     }
   })
@@ -67,7 +58,6 @@ export default function FirstAnimate() {
       transform: [
         { translateX: translateX3.value },
         { translateY: translateY3.value },
-        { rotateZ: `${rotation3.value}deg` },
       ],
     }
   })
@@ -77,7 +67,6 @@ export default function FirstAnimate() {
       transform: [
         { translateX: translateX4.value },
         { translateY: translateY4.value },
-        { rotateZ: `${rotation4.value}deg` },
       ],
     }
   })
@@ -87,13 +76,13 @@ export default function FirstAnimate() {
   function animate1B() {
     let baseTotal = baseLoading.reduce((acc, val) => acc + val)
     switch (baseTotal) {
-      case 0:
+      case 0: // [0,0,0]
         // Player1
         ;(translateX.value = withSpring(0)),
           (translateY.value = withSpring(170)),
           setBaseLoading([1, 0, 0])
         break
-      case 1:
+      case 1: // [0,0,0]
         if (baseLoading[0] && !baseLoading[1] && !baseLoading[2]) {
           // Player 1
           ;(translateX.value = withSpring(175)),
@@ -284,12 +273,18 @@ export default function FirstAnimate() {
       <Text style={styles.text}>baseLoading: {baseLoading}</Text>
 
       <View style={styles.square}>
-        <View style={styles.imgContainer}>
-          <Image
+        <Animated.View
+          style={[
+            styles.imgContainer,
+            { position: 'absolute' },
+            animatePlayer1,
+          ]}>
+          <Text>1</Text>
+          <Animated.Image
             source={require('../../assets/asset2.png')}
             style={styles.imgStyle}
           />
-        </View>
+        </Animated.View>
 
         {baseLoading[0] ? (
           <Image
@@ -302,7 +297,7 @@ export default function FirstAnimate() {
           <View style={styles.imageContainer}>
             <Image
               source={require('../../assets/asset2.png')}
-              style={[styles.imgStyle, { top: hp('15%'), right: wp('-10%') }]}
+              style={[styles.imgStyle, { top: hp('22%'), right: wp('-10%') }]}
             />
           </View>
         ) : null}
@@ -316,9 +311,7 @@ export default function FirstAnimate() {
       </View>
 
       <View style={styles.btnGroup}>
-        <TouchableOpacity
-          style={styles.btnStyle}
-          onPress={() => setBaseLoading([1, 0, 0])}>
+        <TouchableOpacity style={styles.btnStyle} onPress={() => animate1B()}>
           <Text style={styles.btnText}>1B</Text>
         </TouchableOpacity>
         <TouchableOpacity
