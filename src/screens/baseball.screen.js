@@ -7,6 +7,8 @@ import Animated, {
   withSequence,
   withSpring,
   withTiming,
+  runOnUI,
+  runOnJS,
 } from 'react-native-reanimated'
 import {
   widthPercentageToDP as wp,
@@ -15,7 +17,7 @@ import {
 
 export default function FirstAnimate() {
   // states
-  const [baseLoading, setBaseLoading] = useState([1, 1, 1])
+  const [baseLoading, setBaseLoading] = useState([0, 3, 0])
   const [currentBasePlayer, setCurrentBasePlayer] = useState(1)
 
   // shared value
@@ -25,14 +27,14 @@ export default function FirstAnimate() {
 
   // player2 animate Style
   const translateX2 = useSharedValue(0)
-  const translateY2 = useSharedValue(0)
+  const translateY2 = useSharedValue(170)
 
   // player3 animate Style
-  const translateX3 = useSharedValue(0)
-  const translateY3 = useSharedValue(0)
+  const translateX3 = useSharedValue(180)
+  const translateY3 = useSharedValue(170)
 
   // player4 animate Style
-  const translateX4 = useSharedValue(0)
+  const translateX4 = useSharedValue(175)
   const translateY4 = useSharedValue(0)
 
   const animatePlayer1 = useAnimatedStyle(() => {
@@ -42,7 +44,7 @@ export default function FirstAnimate() {
         { translateY: translateY.value },
       ],
     }
-  }, [])
+  })
 
   const animatePlayer2 = useAnimatedStyle(() => {
     return {
@@ -74,175 +76,99 @@ export default function FirstAnimate() {
   // ################# 1B ##################
   // ################# 1B ##################
   function animate1B() {
-    let baseTotal = baseLoading.reduce((acc, val) => acc + val)
-    switch (baseTotal) {
-      case 0: // [0,0,0]
-        // Player1
-        ;(translateX.value = withSpring(0)),
-          (translateY.value = withSpring(170)),
-          setBaseLoading([1, 0, 0])
-        break
-      case 1: // [0,0,0]
-        if (baseLoading[0] && !baseLoading[1] && !baseLoading[2]) {
-          // Player 1
-          ;(translateX.value = withSpring(175)),
-            (translateY.value = withSpring(180)),
-            // Player 2
-            (translateX2.value = withSpring(0)),
-            (translateY2.value = withSpring(170)),
-            setBaseLoading([1, 1, 0])
-        } else if (baseLoading[0] && baseLoading[1] && baseLoading[2]) {
-          // Player 1
-          ;(translateX.value = withSpring(175)),
-            (translateY.value = withSpring(180)),
-            // Player 2
-            (translateX2.value = withSpring(0)),
-            (translateY2.value = withSpring(170)),
-            // Player 3
-            (translateX3.value = withSpring(0)),
-            (translateY3.value = withSpring(0)),
-            // Player 4
-            (translateX4.value = withSpring(180)),
-            (translateY4.value = withSpring(0)),
-            setBaseLoading([1, 1, 1])
-        }
-        break
-      case 2:
-        if (baseLoading[0] && baseLoading[1] && !baseLoading[2]) {
-          // Player 1
-          ;(translateX.value = withSpring(180)),
-            (translateY.value = withSpring(0)),
-            // Player 2
-            (translateX2.value = withSpring(175)),
-            (translateY2.value = withSpring(180)),
-            // Player 3
-            (translateX3.value = withSpring(0)),
-            (translateY3.value = withSpring(170)),
-            setBaseLoading([1, 1, 1])
-        } else if (baseLoading[0] && baseLoading[1] && baseLoading[2]) {
-          // Player 1
-          ;(translateX.value = withSpring(180)),
-            (translateY.value = withSpring(0)),
-            // Player 2
-            (translateX2.value = withSpring(175)),
-            (translateY2.value = withSpring(180)),
-            // Player 3
-            (translateX3.value = withSpring(0)),
-            (translateY3.value = withSpring(170)),
-            // Player 4
-            (translateX4.value = withSpring(0)),
-            (translateY4.value = withSpring(0)),
-            setBaseLoading([1, 1, 1])
-        }
-        break
-      case 3:
-        // Player 1
-        ;(translateX.value = withSpring(0)),
-          (translateY.value = withSpring(0)),
-          // Player 2
-          (translateX2.value = withSpring(180)),
-          (translateY2.value = withSpring(0)),
-          // Player 3
-          (translateX3.value = withSpring(175)),
-          (translateY3.value = withSpring(180)),
-          // Player 4
-          (translateX4.value = withSpring(0)),
-          (translateY4.value = withSpring(170)),
-          setBaseLoading([1, 1, 1])
-        break
+    // player on plate
+    // needs to be done
+
+    //first base
+    if (baseLoading[0]) {
+      switch (baseLoading[0]) {
+        case 1:
+          translateX.value = withTiming(180)
+          translateY.value = withTiming(170)
+          break
+        case 2:
+          translateX2.value = withTiming(180)
+          translateY2.value = withTiming(170)
+          break
+        case 3:
+          translateX3.value = withTiming(180)
+          translateY3.value = withTiming(170)
+          break
+        case 4:
+          translateX4.value = withTiming(180)
+          translateY4.value = withTiming(170)
+          break
+        default:
+          break
+      }
+    }
+
+    //second base
+    if (baseLoading[1]) {
+      switch (baseLoading[1]) {
+        case 1:
+          translateX.value = withTiming(170)
+          translateY.value = withTiming(0)
+          break
+        case 2:
+          translateX2.value = withTiming(170)
+          translateY2.value = withTiming(0)
+          break
+        case 3:
+          translateX3.value = withTiming(180)
+          translateY3.value = withTiming(0)
+          setBaseLoading([0, 0, 3])
+          break
+        case 4:
+          translateX4.value = withTiming(180)
+          translateY4.value = withTiming(0)
+          break
+        default:
+          break
+      }
+    }
+
+    //third base
+    if (baseLoading[2]) {
+      switch (baseLoading[2]) {
+        case 1:
+          translateX.value = withTiming(0)
+          translateY.value = withTiming(0)
+          break
+        case 2:
+          translateX2.value = withTiming(0)
+          translateY2.value = withTiming(0)
+          break
+        case 3:
+          translateX3.value = withTiming(0)
+          translateY3.value = withTiming(0)
+          break
+        case 4:
+          translateX4.value = withTiming(0)
+          translateY4.value = withTiming(0)
+          break
+        default:
+          break
+      }
     }
   }
 
   // ################# 2B ##################
   // ################# 2B ##################
   function animate2B() {
-    let baseTotal = baseLoading.reduce((acc, val) => acc + val)
-    switch (baseTotal) {
-      case 0:
-        if (!baseLoading[0] && !baseLoading[1] && !baseLoading[2]) {
-          ;(translateX.value = withSequence(withTiming(0), withTiming(175))),
-            (translateY.value = withSequence(withTiming(170), withTiming(180))),
-            setBaseLoading([0, 1, 0])
-        } else if (!baseLoading[0] && baseLoading[1] && !baseLoading[2]) {
-          // Player 1
-          ;(translateX.value = withSequence(withTiming(0), withTiming(175))),
-            (translateY.value = withSequence(withTiming(170), withTiming(180))),
-            // Player 2
-            (translateX3.value = withSequence()),
-            (translateY3.value = withSequence(withTiming(0), withTiming(0))),
-            setBaseLoading([0, 1, 0])
+    if (baseLoading[2]) {
+      translateX3.value = withTiming(0, {}, finished => {
+        if (finished) {
+          console.log('ANIMATION ENDED 2B')
         }
-        break
-      case 1:
-        if (!baseLoading[0] && baseLoading[1] && !baseLoading[2]) {
-          // Player 1
-          ;(translateX.value = withSequence(withTiming(175), withTiming(0))),
-            (translateY.value = withSequence(withTiming(0), withTiming(0))),
-            // Player 2
-            (translateX3.value = withSequence(withTiming(0), withTiming(175))),
-            (translateY3.value = withSequence(withTiming(170), withTiming(180)))
-        }
-        break
+      })
+      translateY3.value = withTiming(0)
     }
   }
 
   // ################# 3B ##################
   // ################# 3B ##################
-  function animate3B() {
-    switch (baseTotal) {
-      case 0:
-        if (!baseLoading[0] && !baseLoading[1] && !baseLoading[2]) {
-          // Player 1
-          ;(translateX.value = withSequence(
-            withTiming(0),
-            withTiming(175),
-            withTiming(175),
-          )),
-            (translateY.value = withSequence(
-              withTiming(170),
-              withTiming(180),
-              withTiming(0),
-            )),
-            setBaseLoading([0, 0, 1])
-        } else if (!baseLoading[0] && !baseLoading[1] && baseLoading[2]) {
-          // Player 1
-          ;(translateX.value = withSequence(
-            withTiming(0),
-            withTiming(175),
-            withTiming(175),
-          )),
-            (translateY.value = withSequence(
-              withTiming(170),
-              withTiming(180),
-              withTiming(0),
-            )),
-            // Player 4
-            (translateX4.value = withTiming(0)),
-            (translateY4.value = withTiming(0)),
-            setBaseLoading([0, 0, 1])
-        }
-        break
-      case 1:
-        if (!baseLoading[0] && !baseLoading[1] && baseLoading[2]) {
-          // Player 1
-          ;(translateX.value = withTiming(0)),
-            (translateY.value = withTiming(0)),
-            // Player 4
-            (translateX4.value = withSequence(
-              withTiming(0),
-              withTiming(175),
-              withSpring(175),
-            )),
-            (translateY4.value = withSequence(
-              withTiming(170),
-              withTiming(180),
-              withSpring(0),
-            ))
-          setBaseLoading([0, 0, 1])
-        }
-        break
-    }
-  }
+  function animate3B() {}
 
   // ################# Homerun ##################
   // ################# Homerun ##################
@@ -262,51 +188,70 @@ export default function FirstAnimate() {
       ))
   }
 
-  useEffect(() => {
-    ;(async function placeholder() {
-      console.log(baseLoading)
-    })()
-  }, [baseLoading])
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>baseLoading: {baseLoading}</Text>
 
       <View style={styles.square}>
-        <Animated.View
-          style={[
-            styles.imgContainer,
-            { position: 'absolute' },
-            animatePlayer1,
-          ]}>
-          <Text>1</Text>
-          <Animated.Image
+        <Animated.View style={[styles.imgContainer, animatePlayer1]}>
+          <Image
             source={require('../../assets/asset2.png')}
             style={styles.imgStyle}
           />
         </Animated.View>
 
         {baseLoading[0] ? (
-          <Image
-            source={require('../../assets/asset2.png')}
-            style={[styles.imgStyle, { top: hp('20%'), right: wp('40%') }]}
-          />
+          <Animated.View style={[styles.imgContainer, animatePlayer2]}>
+            <Image
+              source={require('../../assets/asset2.png')}
+              style={styles.imgStyle}
+            />
+          </Animated.View>
         ) : null}
 
         {baseLoading[1] ? (
-          <View style={styles.imageContainer}>
+          <Animated.View style={[styles.imgContainer, animatePlayer3]}>
             <Image
               source={require('../../assets/asset2.png')}
-              style={[styles.imgStyle, { top: hp('22%'), right: wp('-10%') }]}
+              style={styles.imgStyle}
             />
-          </View>
+          </Animated.View>
         ) : null}
 
-        {baseLoading[2] ? (
-          <Image
-            source={require('../../assets/asset2.png')}
-            style={[styles.imgStyle, { top: -15, left: wp('45%') }]}
-          />
+        {baseLoading[2] === 1 ? (
+          <Animated.View style={[styles.imgContainer, animatePlayer1]}>
+            <Image
+              source={require('../../assets/asset2.png')}
+              style={styles.imgStyle}
+            />
+          </Animated.View>
+        ) : null}
+
+        {baseLoading[2] === 2 ? (
+          <Animated.View style={[styles.imgContainer, animatePlayer2]}>
+            <Image
+              source={require('../../assets/asset2.png')}
+              style={styles.imgStyle}
+            />
+          </Animated.View>
+        ) : null}
+
+        {baseLoading[2] === 3 ? (
+          <Animated.View style={[styles.imgContainer, animatePlayer3]}>
+            <Image
+              source={require('../../assets/asset2.png')}
+              style={styles.imgStyle}
+            />
+          </Animated.View>
+        ) : null}
+
+        {baseLoading[2] === 4 ? (
+          <Animated.View style={[styles.imgContainer, animatePlayer4]}>
+            <Image
+              source={require('../../assets/asset2.png')}
+              style={styles.imgStyle}
+            />
+          </Animated.View>
         ) : null}
       </View>
 
@@ -314,9 +259,7 @@ export default function FirstAnimate() {
         <TouchableOpacity style={styles.btnStyle} onPress={() => animate1B()}>
           <Text style={styles.btnText}>1B</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.btnStyle}
-          onPress={() => setBaseLoading([0, 1, 0])}>
+        <TouchableOpacity style={styles.btnStyle} onPress={() => animate2B()}>
           <Text style={styles.btnText}>2B</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -356,6 +299,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   imgContainer: {
+    position: 'absolute',
     justifyContent: 'center',
     alignItems: 'center',
     height: 55,
@@ -363,7 +307,6 @@ const styles = StyleSheet.create({
   },
   imgStyle: {
     transform: [{ rotate: '130deg' }],
-    position: 'absolute',
     height: 50,
     width: 50,
   },
